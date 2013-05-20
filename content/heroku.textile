@@ -1,0 +1,256 @@
+h1. Understanding Heroku
+
+h1. Heroku is
+
+* A LARGE, comprehensive set of services built on top of AWS
+* Instead of purchasing servers, you purchase dynos
+* Instead of managing servers, you manage application code and configuration
+* Git is the underlying tool to manage applications and deployment
+
+h1. Heroku is not
+
+* A place to buy servers
+* A place to run any platform or software
+* Immune to failure from a provider (AWS)
+
+h1(slide0). Differences Between Rackspace And Heroku
+
+h1. Rackspace
+
+* Rackspace Step 1: Select a server
+* Rackspace Step 2: Select an operating system
+* Rackspace Step 3: Configure server (install software, add users, security, etc...)
+* Rackspace Step 4: If you need a different server for your database, repeat steps 1 - 3
+* Rackspace Step 5: Write a deployment process to deploy your code to the server
+* Rackspace Step 6: Deploy your application
+
+h1. Heroku
+
+* Heroku Step 1: Create a Heroku app
+* Heroku Step 2: Add your database as an addon
+* Heroku Step 3: Deploy your code using Git
+
+h1. Pros
+
+* Unbelievably simple
+* Barrier to entry is minimal
+* Start-up costs are virtually none
+* Faster time to market
+* More time spent on your core goals
+* Can handle growth effortlessly
+
+h1. Cons
+
+* Living by their rules/restrictions
+* Can't use something they don't support
+* If you get big enough, it can cost a lot more than another provider
+* Depends entirely on AWS (Then again, a whole lot of the internet is fucked if AWS is having problems)
+
+h1(slide0). How do I use Heroku?
+
+h1. Prerequisites
+
+* Ruby (1.8.7+) (Please don't use 1.8.7)
+* Heroku API gem
+* Git
+* A Heroku account (heroku.com)
+
+h1. Why does Heroku need Git?
+
+* Perfect way to version your releases, determine if something actually changed, and take actions based on changes
+* Assumes you're using Git as your version control
+* Heroku essentially is Github, without the interface
+* Write code -> commit to Git -> push your changes to Heroku "github" -> Heroku says "Something changed, I better deploy this code after I save it to the git repository"
+
+h1. Okay, I've Installed It, What Now?
+
+* Important: know thy help
+
+:inlinecode
+$ heroku
+$ heroku help command[:subcommand]
+:endinlinecode
+
+* Let's first make sure we're authenticated
+
+:inlinecode
+$ heroku help auth
+$ heroku auth:login
+$ heroku auth:whoami
+:endinlinecode
+
+h1. Let's create a Heroku app
+
+:inlinecode
+$ rails new my_new_app && cd my_new_app
+$ git init
+$ heroku create
+$ vim Gemfile (add "gem 'pg'" and comment out "gem 'sqlite3'")
+$ bundle
+$ rm public/index.html
+$ rails generate scaffold activity name:text description:text
+$ vim config/routes.rb (add "root :to => 'activities#index'" somewhere before 'end' in the file)
+$ git add .
+$ git commit -m "first commit"
+$ git push heroku master
+$ heroku run rake db:migrate
+$ heroku open
+:endinlinecode
+
+h1. What's actually happening
+
+* heroku creates a git repository on their end, with either a randomly generated name, or one that you provided, ands adds the remote git information in your .git/config file
+* heroku sets up an Amazon EC2 micro instance server
+* heroku does some DNS configurations to offer up http://app-name.herokuapp.com as the URL to the app.
+
+h1. Okay, But I Already Have An App...
+
+* It's even simpler
+
+:inlinecode
+$ heroku create
+$ git push heroku master
+:endinlinecode
+
+h1. Link To An Existing App On Heroku
+
+* Remember, your codebase is just a Git repository on Heroku's side.
+
+:inlinecode
+$ git remote add heroku git@heroku.com:app-name.git
+$ heroku config
+:endinlinecode
+
+h1.  WTF is a Dyno?
+
+* A Dyno is a synonym for a server technically.
+* Dynos are for the most part, 512 MB Amazon EC2 Micro instances
+* Dynos get automatically configured based off two things: the stack (cedar by default), and your application at the time of deployment.
+
+h1(slide0). Understanding our configuration
+
+h1. Accounts
+
+* One Master Account: dev@kaboom.org
+* Master account is the owner of all our apps
+* Each of us are collaborators on every app
+* Difference between owner and collaborator: owner can add/edit paid services to app
+* When you are deploying code, use your individual account
+* Install heroku accounts plugin (https://github.com/ddollar/heroku-accounts)
+
+:inlinecode
+$ heroku plugins:install git://github.com/ddollar/heroku-accounts.git
+:endinlinecode
+
+h1. Apps
+
+* see all the apps you have access to
+
+:inlinecode
+$ heroku apps
+:endinlinecode
+
+* If you aren't in the parent directory of a heroku app, you must pass in --app parameter with the app-name specified
+
+:inlinecode
+$ heroku config --app app-name
+:endinlinecode
+
+h1. Addons
+
+* Most software is available as an addon
+* Paid/Free versions
+* checkout comprehensive list and documentation at addons.heroku.com
+
+:inlinecode
+$ heroku help addons
+$ heroku addons:list
+$ heroku addons:add heroku-postgresql:ronin --version 9.2
+$ heroku addons:remove pgbackups
+:endinlinecode
+
+h1. Config
+
+* Heroku provides a nice interface to add ENVIRONMENT variables
+* Traditionally, here's how you would set an ENV variable when starting a rails app:
+
+:inlinecode
+$ VAR1=test HOST=something.com rails s
+:endinlinecode
+
+* Heroku's version of managing ENVIRONMENT variables
+
+:inlinecode
+$ heroku help config [--app app-name]
+$ heroku config [--app app-name]
+$ heroku config:set VAR1=test HOST=something.com TEST=true [--app app-name]
+$ heroku config:unset VAR1 HOST [-app app-name]
+:endinlinecode
+
+h1. Does Heroku run migrations for me automatically during deployment
+
+* No.
+* Heroku offers a command that lets you run those one-off commands
+
+:inlinecode
+$ heroku run
+$ heroku run console # you know this as rails console
+$ heroku run bash # logs you into the dyno
+$ heroku run rake db:migrate
+:endinlinecode
+
+h1. How do I find errors? Or even look at the logs?
+
+* All logged data gets written to STDOUT
+
+:inlinecode
+$ heroku logs [--app app-name] # dumps the last ~100 lines of the log
+$ heroku logs -t [--app app-name] # dumps the last ~100 lines of the log and tails from then on
+$ heroku logs -n 10000 [--app app-name] # dumps the last 10,000 lines
+$ heroku logs -n 1000 -t [--app app-name] # what da ya think!
+:endinlinecode
+
+h1(slide0). So how does Heroku "scale?"
+
+* Remember that Dynos are technically servers, and Heroku manages the configuration and building of all Dynos.
+
+:inlinecode
+$ heroku ps:scale web=10 --app app-name  # number of dynos to activate
+:endinlinecode
+
+h1. Managing multiple versions of an app
+
+* Say you want to protoype a new feature on ODP, but don't want to mess with the staging version
+
+:inlinecode
+$ heroku create --remote my_prototype # creates a new app, and adds a remote called "my_prototype" to your .git/config
+$ heroku config:set ... --remote my_prototype # set all the necessary ENVIRONMENT variables
+$ git push my_prototype master # if you are using a different branch (you definitely are), s/master/your_branch:master/
+:endinlinecode
+
+* At this point, if you want to allow other people to work on this app with you, you can ...
+
+h1. Heroku sharing
+
+* You can add collaborators from the heroku.com site, or through the command-line interface
+
+inlinecode
+$ heroku sharing --remote my_prototype # lists the current owner and collaborators of this app
+$ heroku sharing:add email@address.com --remote my_prototype
+$ heroku sharing:remove email@address.com --remote my_prototype
+$ heroku sharing:transfer email@address.com --remote my_prototype
+:endinlinecode
+
+h1. What's this --remote parameter
+
+* It's a way to access your app in lieu of the app name
+* It can be easier to understand apps based off local remote names than global heroku app names
+* --remote will parse your .git/config file to find the app associated with that remote name
+* Again, you can use --remote in lieu of --app
+
+h1. Some other commands to note
+
+:inlinecode
+$ heroku domains
+$ heroku maintenance
+:endinlinecode

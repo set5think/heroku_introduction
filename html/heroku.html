@@ -1,0 +1,321 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<title>These days it's more Heroku than Hero Cou</title>
+<!-- metadata -->
+<meta name="generator" content="S5" />
+<meta name="version" content="S5 1.1" />
+<meta name="presdate" content="May 09, 2013" />
+<meta name="author" content="Hassan Shahid" />
+<meta name="company" content="KaBOOM!" />
+<!-- configuration parameters -->
+<meta name="defaultView" content="slideshow" />
+<meta name="controlVis" content="hidden" />
+<!-- style sheet links -->
+<link rel="stylesheet" href="../assets/ui/default/slides.css" type="text/css" media="projection" id="slideProj" />
+<link rel="stylesheet" href="../assets/ui/default/outline.css" type="text/css" media="screen" id="outlineStyle" />
+<link rel="stylesheet" href="../assets/stylesheets/print.css" type="text/css" media="print" id="slidePrint" />
+<link rel="stylesheet" href="../assets/ui/default/opera.css" type="text/css" media="projection" id="operaFix" />
+<link rel="stylesheet" href="../assets/stylesheets/pressie.css" type="text/css" />
+
+<!-- S5 JS -->
+<script src="../assets/ui/default/slides.js" type="text/javascript"></script>
+
+<!-- Syntax Highlighter -->
+<link rel="stylesheet"  href="../assets/dp.SyntaxHighlighter/Styles/SyntaxHighlighter.css"></link>
+
+</head>
+<body>
+
+<div class="layout">
+<div id="controls"><!-- DO NOT EDIT --></div>
+<div id="currentSlide"><!-- DO NOT EDIT --></div>
+<div id="header"></div>
+<div id="footer">
+<h2>Copyright © 2013 Hassan Shahid</h2>
+</div>
+
+</div>
+
+
+<div class="presentation">
+  
+<div class="slide"><h1>Understanding Heroku</h1>
+</div>
+<div class="slide"><h1>Heroku is</h1>
+<ul>
+	<li>A <span class="caps">LARGE</span>, comprehensive set of services built on top of <span class="caps">AWS</span></li>
+	<li>Instead of purchasing servers, you purchase dynos</li>
+	<li>Instead of managing servers, you manage application code and configuration</li>
+	<li>Git is the underlying tool to manage applications and deployment</li>
+</ul>
+</div>
+<div class="slide"><h1>Heroku is not</h1>
+<ul>
+	<li>A place to buy servers</li>
+	<li>A place to run any platform or software</li>
+	<li>Immune to failure from a provider (<span class="caps">AWS</span>)</li>
+</ul>
+</div>
+<div class="title slide">
+<h1>Differences Between Rackspace And Heroku</h1>
+</div>
+<div class="slide"><h1>Rackspace</h1>
+<ul>
+	<li>Rackspace Step 1: Select a server</li>
+	<li>Rackspace Step 2: Select an operating system</li>
+	<li>Rackspace Step 3: Configure server (install software, add users, security, etc&#8230;)</li>
+	<li>Rackspace Step 4: If you need a different server for your database, repeat steps 1 &#8211; 3</li>
+	<li>Rackspace Step 5: Write a deployment process to deploy your code to the server</li>
+	<li>Rackspace Step 6: Deploy your application</li>
+</ul>
+</div>
+<div class="slide"><h1>Heroku</h1>
+<ul>
+	<li>Heroku Step 1: Create a Heroku app</li>
+	<li>Heroku Step 2: Add your database as an addon</li>
+	<li>Heroku Step 3: Deploy your code using Git</li>
+</ul>
+</div>
+<div class="slide"><h1>Pros</h1>
+<ul>
+	<li>Unbelievably simple</li>
+	<li>Barrier to entry is minimal</li>
+	<li>Start-up costs are virtually none</li>
+	<li>Faster time to market</li>
+	<li>More time spent on your core goals</li>
+	<li>Can handle growth effortlessly</li>
+</ul>
+</div>
+<div class="slide"><h1>Cons</h1>
+<ul>
+	<li>Living by their rules/restrictions</li>
+	<li>Can&#8217;t use something they don&#8217;t support</li>
+	<li>If you get big enough, it can cost a lot more than another provider</li>
+	<li>Depends entirely on <span class="caps">AWS</span> (Then again, a whole lot of the internet is fucked if <span class="caps">AWS</span> is having problems)</li>
+</ul>
+</div>
+<div class="title slide">
+<h1>How do I use Heroku?</h1>
+</div>
+<div class="slide"><h1>Prerequisites</h1>
+<ul>
+	<li>Ruby (1.8.7+) (Please don&#8217;t use 1.8.7)</li>
+	<li>Heroku <span class="caps">API</span> gem</li>
+	<li>Git</li>
+	<li>A Heroku account (heroku.com)</li>
+</ul>
+</div>
+<div class="slide"><h1>Why does Heroku need Git?</h1>
+<ul>
+	<li>Perfect way to version your releases, determine if something actually changed, and take actions based on changes</li>
+	<li>Assumes you&#8217;re using Git as your version control</li>
+	<li>Heroku essentially is Github, without the interface</li>
+	<li>Write code &#8594; commit to Git &#8594; push your changes to Heroku &#8220;github&#8221; &#8594; Heroku says &#8220;Something changed, I better deploy this code after I save it to the git repository&#8221;</li>
+</ul>
+</div>
+<div class="slide"><h1>Okay, I&#8217;ve Installed It, What Now?</h1>
+<ul>
+	<li>Important: know thy help</li>
+</ul>
+<div class="code-normal">
+<pre name="code" class="ruby:nogutter:nocontrols">$ heroku
+$ heroku help command[:subcommand]</pre><p></div><div class="codeurl"><a href="txmt://open?url=file:///Users/hassan/git_projects/presentations/heroku_introduction"></a></div></p>
+<ul>
+	<li>Let&#8217;s first make sure we&#8217;re authenticated</li>
+</ul>
+<div class="code-normal">
+<pre name="code" class="ruby:nogutter:nocontrols">$ heroku help auth
+$ heroku auth:login
+$ heroku auth:whoami</pre><p></div><div class="codeurl"><a href="txmt://open?url=file:///Users/hassan/git_projects/presentations/heroku_introduction"></a></div></p>
+</div>
+<div class="slide"><h1>Let&#8217;s create a Heroku app</h1>
+<div class="code-normal">
+<pre name="code" class="ruby:nogutter:nocontrols">$ rails new my_new_app &amp;&amp; cd my_new_app
+$ git init
+$ heroku create
+$ vim Gemfile (add "gem 'pg'" and comment out "gem 'sqlite3'")
+$ bundle
+$ rm public/index.html
+$ rails generate scaffold activity name:text description:text
+$ vim config/routes.rb (add "root :to =&gt; 'activities#index'" somewhere before 'end' in the file)
+$ git add .
+$ git commit -m "first commit"
+$ git push heroku master
+$ heroku run rake db:migrate
+$ heroku open</pre><p></div><div class="codeurl"><a href="txmt://open?url=file:///Users/hassan/git_projects/presentations/heroku_introduction"></a></div></p>
+</div>
+<div class="slide"><h1>What&#8217;s actually happening</h1>
+<ul>
+	<li>heroku creates a git repository on their end, with either a randomly generated name, or one that you provided, ands adds the remote git information in your .git/config file</li>
+	<li>heroku sets up an Amazon EC2 micro instance server</li>
+	<li>heroku does some <span class="caps">DNS</span> configurations to offer up http://app-name.herokuapp.com as the <span class="caps">URL</span> to the app.</li>
+</ul>
+</div>
+<div class="slide"><h1>Okay, But I Already Have An App&#8230;</h1>
+<ul>
+	<li>It&#8217;s even simpler</li>
+</ul>
+<div class="code-normal">
+<pre name="code" class="ruby:nogutter:nocontrols">$ heroku create
+$ git push heroku master</pre><p></div><div class="codeurl"><a href="txmt://open?url=file:///Users/hassan/git_projects/presentations/heroku_introduction"></a></div></p>
+</div>
+<div class="slide"><h1>Link To An Existing App On Heroku</h1>
+<ul>
+	<li>Remember, your codebase is just a Git repository on Heroku&#8217;s side.</li>
+</ul>
+<div class="code-normal">
+<pre name="code" class="ruby:nogutter:nocontrols">$ git remote add heroku git@heroku.com:app-name.git
+$ heroku config</pre><p></div><div class="codeurl"><a href="txmt://open?url=file:///Users/hassan/git_projects/presentations/heroku_introduction"></a></div></p>
+</div>
+<div class="slide"><h1><span class="caps">WTF</span> is a Dyno?</h1>
+<ul>
+	<li>A Dyno is a synonym for a server technically.</li>
+	<li>Dynos are for the most part, 512 MB Amazon EC2 Micro instances</li>
+	<li>Dynos get automatically configured based off two things: the stack (cedar by default), and your application at the time of deployment.</li>
+</ul>
+</div>
+<div class="title slide">
+<h1>Understanding our configuration</h1>
+</div>
+<div class="slide"><h1>Accounts</h1>
+<ul>
+	<li>One Master Account: dev@kaboom.org</li>
+	<li>Master account is the owner of all our apps</li>
+	<li>Each of us are collaborators on every app</li>
+	<li>Difference between owner and collaborator: owner can add/edit paid services to app</li>
+	<li>When you are deploying code, use your individual account</li>
+	<li>Install heroku accounts plugin (https://github.com/ddollar/heroku-accounts)</li>
+</ul>
+<div class="code-normal">
+<pre name="code" class="ruby:nogutter:nocontrols">$ heroku plugins:install git://github.com/ddollar/heroku-accounts.git</pre><p></div><div class="codeurl"><a href="txmt://open?url=file:///Users/hassan/git_projects/presentations/heroku_introduction"></a></div></p>
+</div>
+<div class="slide"><h1>Apps</h1>
+<ul>
+	<li>see all the apps you have access to</li>
+</ul>
+<div class="code-normal">
+<pre name="code" class="ruby:nogutter:nocontrols">$ heroku apps</pre><p></div><div class="codeurl"><a href="txmt://open?url=file:///Users/hassan/git_projects/presentations/heroku_introduction"></a></div></p>
+<ul>
+	<li>If you aren&#8217;t in the parent directory of a heroku app, you must pass in &#8212;app parameter with the app-name specified</li>
+</ul>
+<div class="code-normal">
+<pre name="code" class="ruby:nogutter:nocontrols">$ heroku config --app app-name</pre><p></div><div class="codeurl"><a href="txmt://open?url=file:///Users/hassan/git_projects/presentations/heroku_introduction"></a></div></p>
+</div>
+<div class="slide"><h1>Addons</h1>
+<ul>
+	<li>Most software is available as an addon</li>
+	<li>Paid/Free versions</li>
+	<li>checkout comprehensive list and documentation at addons.heroku.com</li>
+</ul>
+<div class="code-normal">
+<pre name="code" class="ruby:nogutter:nocontrols">$ heroku help addons
+$ heroku addons:list
+$ heroku addons:add heroku-postgresql:ronin --version 9.2
+$ heroku addons:remove pgbackups</pre><p></div><div class="codeurl"><a href="txmt://open?url=file:///Users/hassan/git_projects/presentations/heroku_introduction"></a></div></p>
+</div>
+<div class="slide"><h1>Config</h1>
+<ul>
+	<li>Heroku provides a nice interface to add <span class="caps">ENVIRONMENT</span> variables</li>
+	<li>Traditionally, here&#8217;s how you would set an <span class="caps">ENV</span> variable when starting a rails app:</li>
+</ul>
+<div class="code-normal">
+<pre name="code" class="ruby:nogutter:nocontrols">$ VAR1=test HOST=something.com rails s</pre><p></div><div class="codeurl"><a href="txmt://open?url=file:///Users/hassan/git_projects/presentations/heroku_introduction"></a></div></p>
+<ul>
+	<li>Heroku&#8217;s version of managing <span class="caps">ENVIRONMENT</span> variables</li>
+</ul>
+<div class="code-normal">
+<pre name="code" class="ruby:nogutter:nocontrols">$ heroku help config [--app app-name]
+$ heroku config [--app app-name]
+$ heroku config:set VAR1=test HOST=something.com TEST=true [--app app-name]
+$ heroku config:unset VAR1 HOST [-app app-name]</pre><p></div><div class="codeurl"><a href="txmt://open?url=file:///Users/hassan/git_projects/presentations/heroku_introduction"></a></div></p>
+</div>
+<div class="slide"><h1>Does Heroku run migrations for me automatically during deployment</h1>
+<ul>
+	<li>No.</li>
+	<li>Heroku offers a command that lets you run those one-off commands</li>
+</ul>
+<div class="code-normal">
+<pre name="code" class="ruby:nogutter:nocontrols">$ heroku run
+$ heroku run console # you know this as rails console
+$ heroku run bash # logs you into the dyno
+$ heroku run rake db:migrate</pre><p></div><div class="codeurl"><a href="txmt://open?url=file:///Users/hassan/git_projects/presentations/heroku_introduction"></a></div></p>
+</div>
+<div class="slide"><h1>How do I find errors? Or even look at the logs?</h1>
+<ul>
+	<li>All logged data gets written to <span class="caps">STDOUT</span></li>
+</ul>
+<div class="code-normal">
+<pre name="code" class="ruby:nogutter:nocontrols">$ heroku logs [--app app-name] # dumps the last ~100 lines of the log
+$ heroku logs -t [--app app-name] # dumps the last ~100 lines of the log and tails from then on
+$ heroku logs -n 10000 [--app app-name] # dumps the last 10,000 lines
+$ heroku logs -n 1000 -t [--app app-name] # what da ya think!</pre><p></div><div class="codeurl"><a href="txmt://open?url=file:///Users/hassan/git_projects/presentations/heroku_introduction"></a></div></p>
+</div>
+<div class="title slide">
+<h1>So how does Heroku &#8220;scale?&#8221;</h1>
+<ul>
+	<li>Remember that Dynos are technically servers, and Heroku manages the configuration and building of all Dynos.</li>
+</ul>
+<div class="code-normal">
+<pre name="code" class="ruby:nogutter:nocontrols">$ heroku ps:scale web=10 --app app-name  # number of dynos to activate</pre><p></div><div class="codeurl"><a href="txmt://open?url=file:///Users/hassan/git_projects/presentations/heroku_introduction"></a></div></p>
+</div>
+<div class="slide"><h1>Managing multiple versions of an app</h1>
+<ul>
+	<li>Say you want to protoype a new feature on <span class="caps">ODP</span>, but don&#8217;t want to mess with the staging version</li>
+</ul>
+<div class="code-normal">
+<pre name="code" class="ruby:nogutter:nocontrols">$ heroku create --remote my_prototype # creates a new app, and adds a remote called "my_prototype" to your .git/config
+$ heroku config:set ... --remote my_prototype # set all the necessary ENVIRONMENT variables
+$ git push my_prototype master # if you are using a different branch (you definitely are), s/master/your_branch:master/</pre><p></div><div class="codeurl"><a href="txmt://open?url=file:///Users/hassan/git_projects/presentations/heroku_introduction"></a></div></p>
+<ul>
+	<li>At this point, if you want to allow other people to work on this app with you, you can &#8230;</li>
+</ul>
+</div>
+<div class="slide"><h1>Heroku sharing</h1>
+<ul>
+	<li>You can add collaborators from the heroku.com site, or through the command-line interface</li>
+</ul>
+<p>inlinecode<br />
+$ heroku sharing &#8212;remote my_prototype # lists the current owner and collaborators of this app<br />
+$ heroku sharing:add email@address.com &#8212;remote my_prototype<br />
+$ heroku sharing:remove email@address.com &#8212;remote my_prototype<br />
+$ heroku sharing:transfer email@address.com &#8212;remote my_prototype<br />
+:endinlinecode</p>
+</div>
+<div class="slide"><h1>What&#8217;s this &#8212;remote parameter</h1>
+<ul>
+	<li>It&#8217;s a way to access your app in lieu of the app name</li>
+	<li>It can be easier to understand apps based off local remote names than global heroku app names</li>
+	<li>&#8212;remote will parse your .git/config file to find the app associated with that remote name</li>
+	<li>Again, you can use &#8212;remote in lieu of &#8212;app</li>
+</ul>
+</div>
+<div class="slide"><h1>Some other commands to note</h1>
+<div class="code-normal">
+<pre name="code" class="ruby:nogutter:nocontrols">$ heroku domains
+$ heroku maintenance</pre><p></div><div class="codeurl"><a href="txmt://open?url=file:///Users/hassan/git_projects/presentations/heroku_introduction"></a></div></p></div>
+</div>
+
+<!-- Syntax Highlighter -->
+<script class="javascript" src="../assets/dp.SyntaxHighlighter/Scripts/shCore.js"></script>
+<script class="javascript" src="../assets/dp.SyntaxHighlighter/Scripts/shBrushCSharp.js"></script>
+<script class="javascript" src="../assets/dp.SyntaxHighlighter/Scripts/shBrushPhp.js"></script>
+<script class="javascript" src="../assets/dp.SyntaxHighlighter/Scripts/shBrushJScript.js"></script>
+<script class="javascript" src="../assets/dp.SyntaxHighlighter/Scripts/shBrushJava.js"></script>
+<script class="javascript" src="../assets/dp.SyntaxHighlighter/Scripts/shBrushVb.js"></script>
+<script class="javascript" src="../assets/dp.SyntaxHighlighter/Scripts/shBrushSql.js"></script>
+<script class="javascript" src="../assets/dp.SyntaxHighlighter/Scripts/shBrushXml.js"></script>
+<script class="javascript" src="../assets/dp.SyntaxHighlighter/Scripts/shBrushDelphi.js"></script>
+<script class="javascript" src="../assets/dp.SyntaxHighlighter/Scripts/shBrushPython.js"></script>
+<script class="javascript" src="../assets/dp.SyntaxHighlighter/Scripts/shBrushRuby.js"></script>
+<script class="javascript" src="../assets/dp.SyntaxHighlighter/Scripts/shBrushCss.js"></script>
+<script class="javascript" src="../assets/dp.SyntaxHighlighter/Scripts/shBrushCpp.js"></script>
+<script language="javascript">
+dp.SyntaxHighlighter.ClipboardSwf = '/flash/clipboard.swf';
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+</body>
+</html>
